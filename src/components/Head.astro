@@ -1,0 +1,25 @@
+---
+const { title = "Luis Carlos", ...props } = Astro.props;
+---
+
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<title>{title}</title>
+<meta name="description" content="Welcome to my new Astro site!" />
+
+<!-- Web analytics -->
+<script />
+
+<!-- Open Graph tags -->
+<meta property="og:title" content="LuiisCarlos Portfolio" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://luisworks.dev" />
+<meta property="og:description" content="Welcome to my Porttfolio!" />
+<meta
+    property="og:image"
+    content="https://www.example.com/_astro/seo-banner.BZD7kegZ.webp"
+/>
+<meta property="og:image:alt" content="" />
+<meta name="viewport" content="width=device-width" />
+<meta name="generator" content={Astro.generator} />
