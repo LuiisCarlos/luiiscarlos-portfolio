@@ -1,25 +1,42 @@
 ---
-const { title = "Luis Carlos", ...props } = Astro.props;
+const {
+  title = "Luis Carlos",
+  description = "Welcome to my Portfolio!",
+  image = "",
+  url = "https://luisworks.dev",
+  imageAlt = "Preview of Luis Carlos Portfolio",
+  ...props
+} = Astro.props;
 ---
 
-<link rel="sitemap" href="/sitemap-index.xml" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
 
 <title>{title}</title>
-<meta name="description" content="Welcome to my new Astro site!" />
+<meta name="description" content={description} />
 
-<!-- Web analytics -->
-<script />
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="sitemap" href="/sitemap-index.xml" />
 
-<!-- Open Graph tags -->
-<meta property="og:title" content="LuiisCarlos Portfolio" />
+<!-- Open Graph / Facebook -->
+<meta property="og:title" content={title} />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://luisworks.dev" />
-<meta property="og:description" content="Welcome to my Porttfolio!" />
-<meta
-    property="og:image"
-    content="https://www.example.com/_astro/seo-banner.BZD7kegZ.webp"
-/>
-<meta property="og:image:alt" content="" />
-<meta name="viewport" content="width=device-width" />
-<meta name="generator" content={Astro.generator} />
+<meta property="og:url" content={url} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:image:alt" content={imageAlt} />
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+<!-- Optional: Web Analytics (commented out for now) -->
+<!-- <script src="https://your-analytics-script.js" defer></script> -->
+
+<!-- Optional: Canonical link -->
+<link rel="canonical" href={url} />
