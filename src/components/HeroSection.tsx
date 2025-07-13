@@ -41,7 +41,7 @@ function HeroSection() {
   }, []);
 
   return (
-    <section className="flex flex-row items-center justify-center h-screen py-20 mb-10 gap-100">
+    <section className="flex flex-row items-center justify-center h-200 py-20 mb-10 gap-100">
       <div className="flex justify-end w-1/2">
         <div className="space-y-10">
           <h1 className="text-[70pt] font-bold m-0 p-0">
@@ -60,7 +60,7 @@ function HeroSection() {
         </div>
       </div>
       <div className="flex justify-start w-1/2">
-        <JsonVisualizer data={personalData} speed={1} />
+        {/* <JsonVisualizer data={personalData} speed={1} /> */}
       </div>
     </section>
   )

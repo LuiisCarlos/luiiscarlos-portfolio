@@ -1,5 +1,4 @@
 import { Award, GraduationCap } from 'lucide-react';
-import React from 'react'
 
 interface Education {
   degree: string;
@@ -20,7 +19,6 @@ interface EducationSectionProps {
   education?: Education[];
   certifications?: Certification[];
 }
-
 
 function FormationSection({
   education = [
@@ -67,7 +65,7 @@ function FormationSection({
 
 
   return (
-    <div className="max-w-6xl mx-auto h-350">
+    <div className="max-w-6xl mx-auto">
       <section className="flex flex-col gap-15 py-20 my-10">
         <header className="text-center space-y-5">
           <h1 className="text-7xl font-bold">
@@ -82,22 +80,22 @@ function FormationSection({
           {/* Education mini section */}
           <div className="flex flex-col gap-5">
             <div className="flex flex-row items-center justify-center gap-4">
-              <GraduationCap size={32} className="text-blue-400" />
+              <GraduationCap size={32} className="text-blue-500" />
               <h3 className="text-3xl font-bold">Education</h3>
             </div>
             {education.map((edu, index) => (
               <div key={index} className="bg-gray-800/15 border border-blue-500/20 rounded-lg text-left p-4 w-150 hover:border-blue-500/60 transition duration-400 space-y-2">
                 <h4 className="text-blue-500 text-xl font-bold">{edu.degree.toUpperCase()}</h4>
                 <h5 className="text-white font-semibold">{edu.institution}</h5>
-                <p className="text-gray-500">{edu.year}</p>
-                <p className="text-gray-500">{edu.description}</p>
+                <p className="text-gray-500 text-sm">{edu.year}</p>
+                <p className="text-gray-500 mb-3.5">{edu.description}</p>
                 {edu.achievements && (
                   <div className="space-y-2">
                     <h6 className="font-semibold text-md">Key Achievements:</h6>
                     <ul className="space-y-2">
-                      {edu.achievements.map((achievement, achIndex) => (
-                        <li key={achIndex} className="flex items-start space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                      {edu.achievements.map((achievement, index) => (
+                        <li key={index} className="flex items-start space-x-2">
+                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
                           <span className="text-gray-500 text-sm">{achievement}</span>
                         </li>
                       ))}

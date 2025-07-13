@@ -2,20 +2,43 @@
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection";
 import FormationSection from "../components/FormationSection";
-import FooterSection from "../components/FooterSection.astro";
+import Footer from "../components/Footer.astro";
+import AboutComponent from "../components/AboutComponent";
 
 const personalData = {
-  name: 'Luis Carlos',
-  email: 'luisccg2003@gmail.com',
-  github: 'https://github.com/LuiisCarlos',
-  linkedin: 'https://linkedin.com/in/luiiscarlos',
+  name: "Luis Carlos",
+  fullname: "Luis Carlos Caicedo Giraldo",
+  role: "Backend Developer",
+  email: "luisccg2003@gmail.com",
+  experience: "1+ years",
+  language: ["English", "Spanish"],
+};
+
+const personalLinks = {
+  github: "https://github.com/LuiisCarlos",
+  linkedin: "https://linkedin.com/in/luiiscarlos",
+  resume: "",
 };
 ---
 
 <Layout>
   <HeroSection client:load />
 
+  <AboutComponent
+    client:load
+    fullname={personalData.fullname}
+    email={personalData.email}
+    experience={personalData.experience}
+    language={personalData.language}
+  />
+
   <FormationSection />
 
-  <FooterSection personalData={personalData} />
+  <Footer
+    name={personalData.name}
+    email={personalData.email}
+    github={personalLinks.github}
+    linkedin={personalLinks.linkedin}
+    resume={personalLinks.resume}
+  />
 </Layout>
