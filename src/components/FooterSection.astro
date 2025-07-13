@@ -1,0 +1,106 @@
+---
+import { Github, Linkedin, Mail, SquareArrowOutUpRight } from "lucide-react";
+
+const quickLinks = [
+  { text: "About", href: "#about" },
+  { text: "Projects", href: "#projects" },
+  { text: "Experience", href: "#experience" },
+  { text: "Resume", href: "placeholder" },
+];
+
+const currentYear = new Date().getFullYear();
+
+const { personalData } = Astro.props;
+const { name, email, github, linkedin} = personalData;
+---
+
+<footer class="bg-gray-800/15 border-t border-blue-500/20 w-full h-auto">
+  <div class="max-w-6xl mx-auto py-5">
+    <div class="grid grid-cols-3">
+      <div class="space-y-5">
+        <h1 class="text-2xl font-bold text-blue-500 my-5">Get in touch</h1>
+        <p class="text-gray-500 text-sm">
+          I'm always open to discussing new
+          <br />
+          opportunities and interesting projects.
+        </p>
+        <div class="flex flex-row items-center gap-2">
+          <Mail size={16} />
+          <p>luisccg2003@gmail.com</p>
+        </div>
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-blue-500 my-5">Quick links</h1>
+        <ul class="space-y-2">
+          {
+            quickLinks.map((link) => (
+              <li>
+                <a class="text-gray-500 text-sm group" href={link.href}>
+                  <span class="group-hover:scale:105 group-hover:text-white">
+                    {link.text}
+                  </span>
+                  {link.text === "Resume" && (
+                    <SquareArrowOutUpRight
+                      size={16}
+                      className="inline-block group-hover:scale:105 group-hover:text-white"
+                    />
+                  )}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-blue-500 my-5">Connect</h1>
+        <div class="flex flex-row gap-5">
+          <a
+            href={github}
+            class="size-12 border border-blue-500/20 rounded-full flex items-center justify-center hover:border-blue-500 cursor-pointer transition-all duration-300"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            <Github size={20} />
+          </a>
+          <a
+            href={linkedin}
+            class="size-12 border border-blue-500/20 rounded-full flex items-center justify-center hover:border-blue-500 cursor-pointer transition-all duration-300"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            <Linkedin size={20} />
+          </a>
+
+          {/* TODO Make this right */}
+          <a
+            href={'mailto:' + email}
+            class="size-12 border border-blue-500/20 rounded-full flex items-center justify-center hover:border-blue-500 cursor-pointer transition-all duration-300"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            <Mail size={20} />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="text-blue-500/20 my-10" />
+
+    {/* Footer's footer 👀 */}
+    <div class="flex flex-row items-center justify-between">
+      <code class="text-sm">
+        <span class="text-blue-500">const</span>
+        <span class="text-gray-500">developer = {'{'}</span> name: '{name}'
+        <span class="text-gray-500">{'}'}</span>
+      </code>
+      <p class="text-sm text-gray-500">
+        © {currentYear} {name}. Built with Astro, React & GSAP.
+      </p>
+    </div>
+
+    <hr class="text-blue-500 my-10" />
+  </div>
+</footer>

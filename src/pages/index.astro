@@ -1,8 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero";
+import HeroSection from "../components/HeroSection";
+import FormationSection from "../components/FormationSection";
+import FooterSection from "../components/FooterSection.astro";
+
+const personalData = {
+  name: 'Luis Carlos',
+  email: 'luisccg2003@gmail.com',
+  github: 'https://github.com/LuiisCarlos',
+  linkedin: 'https://linkedin.com/in/luiiscarlos',
+};
 ---
 
 <Layout>
-	<Hero client:load/>
+  <HeroSection client:load />
+
+  <FormationSection />
+
+  <FooterSection personalData={personalData} />
 </Layout>

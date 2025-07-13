@@ -17,25 +17,8 @@ body {
     box-sizing: border-box;
 }
 
-pre {
-    font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
-        Consolas, "DejaVu Sans Mono", monospace;
-    font-weight: normal;
-    background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0;
-}
-
 code {
     font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
         Consolas, "DejaVu Sans Mono", monospace;
     display: inline-block;
-    background:
-        linear-gradient(66.77deg, #f3cddd 0%, #f5cee7 100%) padding-box,
-        linear-gradient(155deg, #d83333 0%, #f041ff 18%, #f5cee7 45%) border-box;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 6px 8px;
 }
