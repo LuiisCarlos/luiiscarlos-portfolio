@@ -1,9 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection";
+import AboutSection from "../components/AboutSection";
+import ExperienceSection from "../components/ExperienceSection";
 import FormationSection from "../components/FormationSection";
 import Footer from "../components/Footer.astro";
-import AboutComponent from "../components/AboutComponent";
+import { ProjectsSection } from "../components/ProjectsSection";
 
 const personalData = {
   name: "Luis Carlos",
@@ -15,22 +17,26 @@ const personalData = {
 };
 
 const personalLinks = {
-  github: "https://github.com/LuiisCarlos",
+  github: "https://github.com/luiiscarlos",
   linkedin: "https://linkedin.com/in/luiiscarlos",
   resume: "",
 };
 ---
 
 <Layout>
-  <HeroSection client:load />
+  <HeroSection client:load name={personalData.name} />
 
-  <AboutComponent
+  <AboutSection
     client:load
     fullname={personalData.fullname}
     email={personalData.email}
     experience={personalData.experience}
     language={personalData.language}
   />
+
+  <ExperienceSection client:load />
+
+  <ProjectsSection client:load />
 
   <FormationSection />
 

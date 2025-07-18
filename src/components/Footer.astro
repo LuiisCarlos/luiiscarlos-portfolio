@@ -18,17 +18,17 @@ const quickLinks: links[] = [
 ];
 ---
 
-<footer class="bg-slate-900/10 border-t border-blue-500/20 w-full h-auto mt-20">
+<footer class="bg-zinc-600/5 border-t border-zinc-600/20 w-full h-auto mt-20">
   <div class="max-w-6xl mx-auto py-5">
     <div class="grid grid-cols-3">
       <div class="space-y-5">
         <h1 class="text-2xl font-bold text-blue-500 my-5">Get in touch</h1>
-        <p class="text-gray-500 text-sm">
+        <p class="text-zinc-500 text-sm">
           I'm always open to discussing new
           <br />
           opportunities and interesting projects.
         </p>
-        <div class="flex flex-row items-center gap-2 hover:scale-102 transition">
+        <div class="flex flex-row items-center gap-2 text-sm">
           <Mail size={16} />
           <a href={'mailto:' + email}>luisccg2003@gmail.com</a>
         </div>
@@ -39,7 +39,7 @@ const quickLinks: links[] = [
           {
             quickLinks.map((link) => (
               <li>
-                <a class="text-gray-500 text-sm group" href={link.href}>
+                <a class="text-zinc-500 text-sm group" href={link.href}>
                   <span class="group-hover:scale:105 group-hover:text-white transition">
                     {link.text}
                   </span>
@@ -60,7 +60,7 @@ const quickLinks: links[] = [
         <div class="flex flex-row gap-5">
           <a
             href={github}
-            class="size-12 border border-blue-500/20 rounded-full flex items-center justify-center hover:border-blue-500/60 hover:bg-blue-800/20 cursor-pointer transition-all duration-300"
+            class="size-12 border border-accent/30 rounded-full flex items-center justify-center hover:border-accent/60 hover:bg-blue-800/20 cursor-pointer transition-all duration-300"
             target="_blank"
             aria-label="GitHub"
           >
@@ -68,7 +68,7 @@ const quickLinks: links[] = [
           </a>
           <a
             href={linkedin}
-            class="size-12 border border-blue-500/20 rounded-full flex items-center justify-center hover:border-blue-500/60 hover:bg-blue-800/20 cursor-pointer transition-all duration-300"
+            class="size-12 border border-accent/30 rounded-full flex items-center justify-center hover:border-accent/60 hover:bg-blue-800/20 cursor-pointer transition-all duration-300"
             target="_blank"
             aria-label="Linkedin"
           >
@@ -78,7 +78,7 @@ const quickLinks: links[] = [
           {/* TODO Make this right */}
           <a
             href={'mailto:' + email}
-            class="size-12 border border-blue-500/20 rounded-full flex items-center justify-center hover:border-blue-500/60 hover:bg-blue-800/20 cursor-pointer transition-all duration-300"
+            class="size-12 border border-accent/30 rounded-full flex items-center justify-center hover:border-accent/60 hover:bg-blue-800/20 cursor-pointer transition-all duration-300"
             target="_blank"
             aria-label="Mail"
           >
@@ -94,10 +94,10 @@ const quickLinks: links[] = [
     <div class="flex flex-row items-center justify-between">
       <code class="text-sm">
         <span class="text-blue-500">const</span>
-        <span class="text-gray-500">developer = {'{'}</span> name: '{name}'
-        <span class="text-gray-500">{'}'}</span>
+        <span class="text-zinc-500">developer = {'{'}</span> name: '{name}'
+        <span class="text-zinc-500">{'}'}</span>
       </code>
-      <p class="text-sm text-gray-500">
+      <p class="text-sm text-zinc-500">
         © {currentYear} {name}. Built with Astro, React & GSAP.
       </p>
     </div>
