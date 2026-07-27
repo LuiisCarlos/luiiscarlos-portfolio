@@ -11,60 +11,30 @@ import {
   Server,
   Terminal,
 } from "lucide-react";
+import type { ProjectType } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type ProjectType = "api" | "microservice" | "database" | "fullstack" | "cli" | "frontend";
-
-interface Project {
-  title: string;
-  description: string;
+export type LocalizedProject = {
+  id: string;
+  type: ProjectType;
   tech: string[];
   github?: string;
   demo?: string;
-  type?: ProjectType;
-}
+  title: string;
+  description: string;
+  typeLabel: string;
+};
 
-interface ProjectsSectionProps {
-  projects?: Project[];
-}
-
-// TODO(fase 2): mover a src/data/projects.ts y recibirlo siempre por props.
-const DEFAULT_PROJECTS: Project[] = [
-  {
-    title: "Parse AI",
-    description:
-      "Processes and organizes large volumes of business documents by extracting key data, generating AI-powered summaries and tags, and securely storing everything in the cloud. Designed to streamline document management and improve searchability through intelligent filtering.",
-    tech: ["Java", "Spring", "Spring AI", "Docker", "Kafka", "Eureka"],
-    github: "https://github.com/luiiscarlos/parse-ai",
-    type: "microservice",
-  },
-  {
-    title: "Academ-IQ Full Stack Application",
-    description:
-      "Developed as my final degree project, this platform delivers a complete e-learning experience with a modular architecture, secure authentication, and systems for course tracking, progress management, and user interaction.",
-    tech: ["Java", "Spring", "PostgreSQL", "Docker", "Angular", "Typescript", "Tailwind"],
-    github: "https://github.com/luiiscarlos/academ-iq-api",
-    type: "fullstack",
-  },
-  {
-    title: "LuiisCarlos Portfolio",
-    description:
-      "Built with Astro, React and TypeScript. I'm mainly a backend dev but had to tackle some frontend here, let's just say it was a \"fun\" challenge.",
-    tech: ["Astro", "React", "GSAP", "Tailwind", "TypeScript"],
-    github: "https://github.com/luiiscarlos/luiiscarlos-portfolio",
-    demo: "https://luisworks.dev",
-    type: "frontend",
-  },
-  {
-    title: "Express JS Proxy Server",
-    description:
-      "A lightweight API proxy built with Express, designed to handle secure communication between AI services and clients, demonstrating backend expertise.",
-    tech: ["Node.js", "Express", "Javascript"],
-    github: "https://github.com/luiiscarlos/expressjs-proxy",
-    type: "api",
-  },
-];
+type ProjectsSectionProps = {
+  title: string;
+  titleAccent: string;
+  subtitle: string;
+  viewCode: string;
+  liveDemo: string;
+  of: string;
+  entries: LocalizedProject[];
+};
 
 const PROJECT_ICONS: Record<ProjectType, typeof Server> = {
   api: Server,
@@ -75,16 +45,15 @@ const PROJECT_ICONS: Record<ProjectType, typeof Server> = {
   fullstack: Code2,
 };
 
-const PROJECT_LABELS: Record<ProjectType, string> = {
-  api: "REST API",
-  microservice: "Microservice",
-  database: "Database",
-  cli: "CLI Tool",
-  fullstack: "Full Stack",
-  frontend: "Frontend",
-};
-
-function ProjectsSection({ projects = DEFAULT_PROJECTS }: ProjectsSectionProps) {
+function ProjectsSection({
+  title,
+  titleAccent,
+  subtitle,
+  viewCode,
+  liveDemo,
+  of,
+  entries,
+}: ProjectsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -122,20 +91,20 @@ function ProjectsSection({ projects = DEFAULT_PROJECTS }: ProjectsSectionProps) 
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 text-center">
           <h2 className="mb-6 text-4xl font-bold sm:text-5xl lg:text-7xl">
-            My <span className="text-accent">Projects</span>
+            {title} <span className="text-accent">{titleAccent}</span>
           </h2>
           <p className="text-muted mx-auto max-w-2xl text-lg font-semibold sm:text-xl">
-            Backend solutions and system architecture projects that solve real-world problems
+            {subtitle}
           </p>
         </div>
 
         <div className="projects-grid grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {projects.map((project) => {
-            const Icon = PROJECT_ICONS[project.type ?? "fullstack"];
+          {entries.map((project) => {
+            const Icon = PROJECT_ICONS[project.type];
 
             return (
               <article
-                key={project.title}
+                key={project.id}
                 className="project-card group bg-card border-border hover:border-accent/30 rounded-xl border p-6 transition duration-200"
               >
                 <div className="mb-4 flex items-center gap-3">
@@ -146,9 +115,7 @@ function ProjectsSection({ projects = DEFAULT_PROJECTS }: ProjectsSectionProps) 
                     <h3 className="group-hover:text-accent text-xl font-bold transition-colors duration-300">
                       {project.title}
                     </h3>
-                    <span className="text-accent/80 text-sm font-medium">
-                      {PROJECT_LABELS[project.type ?? "fullstack"]}
-                    </span>
+                    <span className="text-accent/80 text-sm font-medium">{project.typeLabel}</span>
                   </div>
                 </div>
 
@@ -174,8 +141,10 @@ function ProjectsSection({ projects = DEFAULT_PROJECTS }: ProjectsSectionProps) 
                       rel="noopener noreferrer"
                     >
                       <Github size={16} aria-hidden="true" />
-                      View Code
-                      <span className="sr-only">of {project.title}</span>
+                      {viewCode}
+                      <span className="sr-only">
+                        {of} {project.title}
+                      </span>
                     </a>
                   )}
 
@@ -187,8 +156,10 @@ function ProjectsSection({ projects = DEFAULT_PROJECTS }: ProjectsSectionProps) 
                       rel="noopener noreferrer"
                     >
                       <ExternalLink size={16} aria-hidden="true" />
-                      Live Demo
-                      <span className="sr-only">of {project.title}</span>
+                      {liveDemo}
+                      <span className="sr-only">
+                        {of} {project.title}
+                      </span>
                     </a>
                   )}
                 </div>

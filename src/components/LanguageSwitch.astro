@@ -1,0 +1,58 @@
+---
+import { languages, langPath, type Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/utils";
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Enlaces reales a la otra ruta, no un <select> con estado: así funciona sin
+// JavaScript y cada idioma tiene su propia URL indexable.
+const entries = (Object.keys(languages) as Lang[]).map((code) => ({
+  code,
+  label: languages[code],
+  href: langPath[code],
+  current: code === lang,
+}));
+---
+
+<nav aria-label={t("a11y.language")}>
+  <ul class="border-border flex items-center rounded-md border text-xs font-medium">
+    {
+      entries.map(({ code, label, href, current }) => (
+        <li>
+          <a
+            href={href}
+            hreflang={code}
+            lang={code}
+            aria-current={current ? "true" : undefined}
+            data-lang-link={code}
+            class:list={[
+              "block px-2.5 py-1.5 uppercase transition-colors",
+              current ? "bg-foreground text-background" : "text-muted hover:text-foreground",
+            ]}
+          >
+            <span aria-hidden="true">{code}</span>
+            <span class="sr-only">{label}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  // Conserva la sección en la que está el usuario al cambiar de idioma.
+  const syncHash = () => {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]").forEach((link) => {
+      link.href = link.pathname + hash;
+    });
+  };
+
+  syncHash();
+  window.addEventListener("hashchange", syncHash);
+</script>

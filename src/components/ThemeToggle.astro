@@ -2,13 +2,17 @@
 // Toggle de tema en .astro con <script> propio: alternar una clase no justifica
 // arrastrar el bundle de React. El estado inicial ya lo aplica el script
 // `is:inline` de Layout.astro, antes del primer pintado.
+
+type Props = { label: string };
+
+const { label } = Astro.props;
 ---
 
 <button
   id="theme-toggle"
   type="button"
-  class="border-border hover:bg-card grid size-9 cursor-pointer place-items-center rounded-md border transition-colors"
-  aria-label="Toggle color theme"
+  class="border-border hover:bg-card grid size-9 shrink-0 cursor-pointer place-items-center rounded-md border transition-colors"
+  aria-label={label}
 >
   <!-- Sol: visible en modo oscuro (la acción es "cambiar a claro") -->
   <svg

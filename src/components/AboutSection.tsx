@@ -1,39 +1,135 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import { ArrowUpRight } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 type AboutSectionProps = {
   fullname: string;
   email: string;
-  experience: string;
-  language: string[];
+  title: string;
+  titleAccent: string;
+  tablist: string;
+  tabs: { aboutme: string; skills: string; resume: string };
+  summary: string;
+  bio: string;
+  experienceValue: string;
+  languages: readonly string[];
+  resumePlaceholder: string;
 };
 
-const TABS = [
-  { id: "aboutme", label: "About Me" },
-  { id: "skills", label: "Skills" },
-  { id: "resume", label: "Download Or View Resume" },
-] as const;
-
-type TabId = (typeof TABS)[number]["id"];
+const TAB_IDS = ["aboutme", "skills", "resume"] as const;
+type TabId = (typeof TAB_IDS)[number];
 
 function SkillCard({ name, children }: { name: string; children: ReactNode }) {
   return (
-    <div className="bg-card border-border text-foreground flex h-24 items-center justify-center gap-3 rounded-lg border transition-colors">
+    <div className="skill-card bg-card border-border text-foreground flex h-24 items-center justify-center gap-3 rounded-lg border transition-colors">
       <span aria-hidden="true">{children}</span>
       <span className="font-bold">{name}</span>
     </div>
   );
 }
 
-function AboutSection({ fullname, email, experience, language }: AboutSectionProps) {
+function AboutSection({
+  fullname,
+  email,
+  title,
+  titleAccent,
+  tablist,
+  tabs,
+  summary,
+  bio,
+  experienceValue,
+  languages,
+  resumePlaceholder,
+}: AboutSectionProps) {
   const [activeTab, setActiveTab] = useState<TabId>("aboutme");
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
 
+  // Entrada al hacer scroll: el título se revela palabra a palabra, luego las
+  // pestañas y el panel.
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const split = new SplitText(".about-title", { type: "words" });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+          },
+        });
+
+        tl.from(split.words, {
+          opacity: 0,
+          y: 24,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "power3.out",
+        })
+          .from(
+            ".about-tab",
+            { opacity: 0, x: -24, duration: 0.5, stagger: 0.1, ease: "power2.out" },
+            "-=0.35"
+          )
+          .from(
+            panelRef.current,
+            { opacity: 0, y: 16, duration: 0.5, ease: "power2.out" },
+            "-=0.3"
+          );
+
+        // SplitText deja el DOM partido: hay que deshacerlo al revertir.
+        return () => split.revert();
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Transición al cambiar de pestaña. La primera vez no, que ya la cubre la
+  // animación de entrada.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from(panelRef.current, { opacity: 0, y: 12, duration: 0.35, ease: "power2.out" });
+
+        if (activeTab === "skills") {
+          gsap.from(".skill-card", {
+            opacity: 0,
+            y: 16,
+            scale: 0.97,
+            duration: 0.4,
+            stagger: 0.04,
+            ease: "power2.out",
+          });
+        }
+      });
+    }, panelRef);
+
+    return () => ctx.revert();
+  }, [activeTab]);
+
+  // Las etiquetas son identificadores de código, no texto de interfaz: no se traducen.
   const entries = [
     { label: "fullname", value: fullname },
     { label: "email", value: email },
-    { label: "experience", value: experience },
-    { label: "language", value: language },
+    { label: "experience", value: experienceValue },
+    { label: "language", value: languages },
   ];
 
   // El patrón ARIA de tabs exige navegación con flechas, no solo Tab.
@@ -42,22 +138,22 @@ function AboutSection({ fullname, email, experience, language }: AboutSectionPro
     if (delta === 0) return;
 
     event.preventDefault();
-    const next = (index + delta + TABS.length) % TABS.length;
-    setActiveTab(TABS[next].id);
+    const next = (index + delta + TAB_IDS.length) % TAB_IDS.length;
+    setActiveTab(TAB_IDS[next]);
     tabRefs.current[next]?.focus();
   };
 
   return (
-    <section id="about" className="bg-card/40 my-10 py-20">
+    <section ref={sectionRef} id="about" className="bg-card/40 my-10 py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-16">
         <div className="flex flex-col gap-10 lg:flex-row lg:gap-15">
           <header className="flex-1 space-y-5">
-            <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl">
-              More about <span className="text-accent">me</span>
+            <h2 className="about-title text-4xl font-bold sm:text-5xl lg:text-6xl">
+              {title} <span className="text-accent">{titleAccent}</span>
             </h2>
 
-            <div role="tablist" aria-label="About me" className="flex flex-col space-y-4 text-sm">
-              {TABS.map(({ id, label }, index) => (
+            <div role="tablist" aria-label={tablist} className="flex flex-col space-y-4 text-sm">
+              {TAB_IDS.map((id, index) => (
                 <button
                   key={id}
                   ref={(el) => {
@@ -70,13 +166,13 @@ function AboutSection({ fullname, email, experience, language }: AboutSectionPro
                   tabIndex={activeTab === id ? 0 : -1}
                   onClick={() => setActiveTab(id)}
                   onKeyDown={(event) => onTabKeyDown(event, index)}
-                  className={`group flex cursor-pointer flex-row items-center justify-between gap-5 rounded-lg px-3.5 py-3 text-left transition-colors ${
+                  className={`about-tab group flex cursor-pointer flex-row items-center justify-between gap-5 rounded-lg px-3.5 py-3 text-left transition-colors ${
                     activeTab === id
                       ? "bg-foreground text-background"
                       : "bg-background text-foreground hover:bg-foreground/80 hover:text-background"
                   }`}
                 >
-                  {label}
+                  {tabs[id]}
                   <ArrowUpRight
                     size={18}
                     aria-hidden="true"
@@ -87,7 +183,7 @@ function AboutSection({ fullname, email, experience, language }: AboutSectionPro
             </div>
           </header>
 
-          <div className="lg:flex-2">
+          <div ref={panelRef} className="lg:flex-2">
             {activeTab === "aboutme" && (
               <div
                 role="tabpanel"
@@ -95,16 +191,8 @@ function AboutSection({ fullname, email, experience, language }: AboutSectionPro
                 aria-labelledby="tab-aboutme"
                 className="space-y-5"
               >
-                <h3 className="text-xl font-semibold">Professional Summary</h3>
-                <p className="text-muted">
-                  Hey, I&apos;m Luis. Just graduated in Multiplatform Development and I&apos;m all
-                  about building stuff that works and feels clean. I love organized code and I pick
-                  up new tech fast. Messy code? Not my thing. Backend is my zone (Java, Spring,
-                  PostgreSQL), but I&apos;ve also played around with JavaScript, TypeScript,
-                  Angular, and even some React. When I&apos;m not coding, I&apos;m probably vibing
-                  to music, gaming, or kicking a ball on the weekend. Always up for the next cool
-                  challenge.
-                </p>
+                <h3 className="text-xl font-semibold">{summary}</h3>
+                <p className="text-muted">{bio}</p>
 
                 <pre className="bg-card border-border text-muted hover:border-accent/30 overflow-x-auto rounded-lg border p-5 font-mono text-sm transition duration-400">
                   <code>
@@ -222,8 +310,8 @@ function AboutSection({ fullname, email, experience, language }: AboutSectionPro
 
             {activeTab === "resume" && (
               <div role="tabpanel" id="panel-resume" aria-labelledby="tab-resume">
-                {/* TODO(pendiente): enlazar el CV en PDF desde public/. */}
-                <p className="text-muted">Resume coming soon.</p>
+                {/* TODO: enlazar el CV en PDF desde public/. */}
+                <p className="text-muted">{resumePlaceholder}</p>
               </div>
             )}
           </div>

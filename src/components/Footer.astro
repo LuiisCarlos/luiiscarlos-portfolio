@@ -1,34 +1,32 @@
 ---
 import { Github, Linkedin, Mail, SquareArrowOutUpRight } from "lucide-react";
+import { personal } from "@/data/personal";
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/utils";
 
-type Props = {
-  name: string;
-  email: string;
-  github: string;
-  linkedin: string;
-  resume?: string;
-};
+type Props = { lang: Lang };
 
-const { name, email, github, linkedin, resume } = Astro.props;
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 
 const currentYear = new Date().getFullYear();
 
 // `resume` puede venir vacío: en ese caso no se renderiza el enlace en vez de
 // dejar un <a href="">.
 const quickLinks = [
-  { text: "About", href: "#about" },
-  { text: "Experience", href: "#experience" },
-  { text: "Projects", href: "#projects" },
-  { text: "Education", href: "#formation" },
-  ...(resume ? [{ text: "Resume", href: resume }] : []),
+  { text: t("nav.about"), href: "#about" },
+  { text: t("nav.experience"), href: "#experience" },
+  { text: t("nav.projects"), href: "#projects" },
+  { text: t("nav.education"), href: "#formation" },
+  ...(personal.resume ? [{ text: t("footer.resume"), href: personal.resume }] : []),
 ];
 
 const socials = [
-  { label: "GitHub", href: github, Icon: Github, external: true },
-  { label: "LinkedIn", href: linkedin, Icon: Linkedin, external: true },
+  { label: "GitHub", href: personal.github, Icon: Github, external: true },
+  { label: "LinkedIn", href: personal.linkedin, Icon: Linkedin, external: true },
   // mailto: no debe abrir una pestaña nueva: deja una en blanco al lanzar el
   // cliente de correo.
-  { label: "Email", href: `mailto:${email}`, Icon: Mail, external: false },
+  { label: "Email", href: `mailto:${personal.email}`, Icon: Mail, external: false },
 ];
 ---
 
@@ -36,21 +34,19 @@ const socials = [
   <div class="mx-auto max-w-6xl px-6 py-10 lg:px-16">
     <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
       <div class="space-y-5">
-        <h2 class="text-accent text-2xl font-bold">Get in touch</h2>
-        <p class="text-muted text-sm">
-          I'm always open to discussing new opportunities and interesting projects.
-        </p>
+        <h2 class="text-accent text-2xl font-bold">{t("footer.get-in-touch")}</h2>
+        <p class="text-muted text-sm">{t("footer.get-in-touch-text")}</p>
         <a
-          href={`mailto:${email}`}
+          href={`mailto:${personal.email}`}
           class="hover:text-accent flex flex-row items-center gap-2 text-sm transition-colors"
         >
           <Mail size={16} aria-hidden="true" />
-          {email}
+          {personal.email}
         </a>
       </div>
 
       <div>
-        <h2 class="text-accent mb-5 text-2xl font-bold">Quick links</h2>
+        <h2 class="text-accent mb-5 text-2xl font-bold">{t("footer.quick-links")}</h2>
         <ul class="space-y-2">
           {
             quickLinks.map((link) => (
@@ -60,7 +56,7 @@ const socials = [
                   href={link.href}
                 >
                   {link.text}
-                  {link.text === "Resume" && (
+                  {link.href === personal.resume && (
                     <SquareArrowOutUpRight size={14} aria-hidden="true" className="inline-block" />
                   )}
                 </a>
@@ -71,7 +67,7 @@ const socials = [
       </div>
 
       <div>
-        <h2 class="text-accent mb-5 text-2xl font-bold">Connect</h2>
+        <h2 class="text-accent mb-5 text-2xl font-bold">{t("footer.connect")}</h2>
         <ul class="flex flex-row gap-5">
           {
             socials.map(({ label, href, Icon, external }) => (
@@ -97,12 +93,12 @@ const socials = [
     <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
       <code class="font-mono text-sm">
         <span class="text-accent">const</span>
-        <span class="text-muted">developer = &lbrace;</span> name: '{name}'
+        <span class="text-muted">developer = &lbrace;</span> name: '{personal.name}'
         <span class="text-muted">&rbrace;</span>
       </code>
       <p class="text-muted text-sm">
         © {currentYear}
-        {name}. Built with Astro, React &amp; GSAP.
+        {personal.name}. {t("footer.built-with")}
       </p>
     </div>
   </div>

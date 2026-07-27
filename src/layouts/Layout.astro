@@ -1,6 +1,8 @@
 ---
 import Head from "@components/Head.astro";
 import Header from "@components/Header.astro";
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/utils";
 
 import "@fontsource-variable/roboto";
 import "@fontsource/source-code-pro/400.css";
@@ -8,20 +10,21 @@ import "@fontsource/source-code-pro/500.css";
 import "@/styles/global.css";
 
 type Props = {
+  lang: Lang;
   title?: string;
   description?: string;
   image?: string;
   imageAlt?: string;
 };
 
-const { title, description, image, imageAlt } = Astro.props;
+const { lang, title, description, image, imageAlt } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
-<!-- TODO(fase 2): `lang` debe derivarse de la URL cuando existan las rutas /es/ -->
-<html lang="en">
+<html lang={lang}>
   <head>
-    <Head title={title} description={description} image={image} imageAlt={imageAlt} />
+    <Head lang={lang} title={title} description={description} image={image} imageAlt={imageAlt} />
 
     {
       /*
@@ -44,10 +47,10 @@ const { title, description, image, imageAlt } = Astro.props;
       href="#content"
       class="bg-accent text-background sr-only rounded-md px-4 py-2 focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50"
     >
-      Skip to content
+      {t("a11y.skip")}
     </a>
 
-    <Header />
+    <Header lang={lang} />
 
     <main id="content">
       <slot />

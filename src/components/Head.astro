@@ -1,48 +1,61 @@
 ---
+import { defaultLang, languages, type Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/utils";
+
 type Props = {
+  lang: Lang;
   title?: string;
   description?: string;
   image?: string;
   imageAlt?: string;
 };
 
-const {
-  title = "Luis Carlos — Backend Developer",
-  description = "Portfolio of Luis Carlos Caicedo Giraldo, a backend developer working with Java, Spring and PostgreSQL.",
-  // TODO(pendiente): crear public/og.png (1200x630). Hasta entonces las
-  // previsualizaciones en redes salen en blanco.
-  image = "/og.png",
-  imageAlt = "Preview of Luis Carlos Portfolio",
-} = Astro.props;
+const { lang, title, description, image = "/og.png", imageAlt } = Astro.props;
+const t = useTranslations(lang);
 
 // `site` está en astro.config.mjs, así que canonical y og:url se ajustan solos
 // a cada ruta. No hardcodear URLs aquí.
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL(image, Astro.site);
+
+// Ruta sin prefijo de idioma, para construir las alternativas de cada locale.
+const basePath = Astro.url.pathname.replace(/^\/es(?=\/|$)/, "") || "/";
+const alternates = (Object.keys(languages) as Lang[]).map((code) => ({
+  code,
+  href: new URL(code === defaultLang ? basePath : `/${code}${basePath}`, Astro.site),
+}));
 ---
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="generator" content={Astro.generator} />
 
-<title>{title}</title>
-<meta name="description" content={description} />
+<title>{title ?? t("meta.title")}</title>
+<meta name="description" content={description ?? t("meta.description")} />
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="canonical" href={canonical} />
 
+{alternates.map(({ code, href }) => <link rel="alternate" hreflang={code} href={href} />)}
+<link
+  rel="alternate"
+  hreflang="x-default"
+  href={alternates.find(({ code }) => code === defaultLang)?.href}
+/>
+
 <!-- Open Graph / Facebook -->
-<meta property="og:title" content={title} />
+<meta property="og:title" content={title ?? t("meta.title")} />
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonical} />
-<meta property="og:description" content={description} />
+<meta property="og:locale" content={lang} />
+<meta property="og:description" content={description ?? t("meta.description")} />
 <meta property="og:image" content={imageUrl} />
-<meta property="og:image:alt" content={imageAlt} />
+<meta property="og:image:alt" content={imageAlt ?? t("meta.title")} />
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description} />
+<meta name="twitter:title" content={title ?? t("meta.title")} />
+<meta name="twitter:description" content={description ?? t("meta.description")} />
 <meta name="twitter:image" content={imageUrl} />
-<meta name="twitter:image:alt" content={imageAlt} />
+<meta name="twitter:image:alt" content={imageAlt ?? t("meta.title")} />

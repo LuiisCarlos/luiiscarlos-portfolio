@@ -8,7 +8,23 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
   site: "https://luisworks.dev",
-  integrations: [react(), sitemap()],
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "es"],
+    routing: {
+      // El idioma por defecto vive en "/" y el español en "/es/".
+      prefixDefaultLocale: false,
+    },
+  },
+  integrations: [
+    react(),
+    sitemap({
+      i18n: {
+        defaultLocale: "en",
+        locales: { en: "en", es: "es" },
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

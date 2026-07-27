@@ -1,0 +1,35 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import HeroSection from "@components/HeroSection";
+import AboutSection from "@components/AboutSection";
+import ExperienceSection from "@components/ExperienceSection";
+import ProjectsSection from "@components/ProjectsSection";
+import FormationSection from "@components/FormationSection";
+import Footer from "@components/Footer.astro";
+import type { Lang } from "@/i18n/config";
+import { getContent } from "@/i18n/content";
+
+// Cuerpo único de la portada para los dos idiomas: /index.astro y /es/index.astro
+// solo eligen el `lang`. Así las dos rutas no pueden divergir.
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const content = getContent(lang);
+---
+
+<Layout lang={lang}>
+  {/* client:load solo para lo visible en el primer viewport. */}
+  <HeroSection client:load {...content.hero} />
+
+  {/* El resto está bajo el fold: client:visible. */}
+  <AboutSection client:visible {...content.about} />
+
+  <ExperienceSection client:visible {...content.experience} />
+
+  <ProjectsSection client:visible {...content.projects} />
+
+  {/* Sin directiva: es puramente presentacional, no envía JS. */}
+  <FormationSection {...content.formation} />
+
+  <Footer lang={lang} />
+</Layout>
