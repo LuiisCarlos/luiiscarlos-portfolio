@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
-@theme {
-    --color-accent: #3b82f6; /* Blue */
+/* Modo oscuro por clase en <html>, no por media query: hay toggle manual con
+   persistencia. :where() mantiene la especificidad a 0. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Tokens de diseño — única fuente de verdad.
+   Documentados en .docs/PATRON_UI.md. No hardcodear colores en componentes.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --background: #ffffff;
+  --foreground: #09090b;
+  --muted: #52525b;
+  --card: #fafafa;
+  --border: #e4e4e7;
+  --accent: #2563eb;
+
+  color-scheme: light;
 }
 
-html,
-body {
-    font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-        sans-serif;
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted: #a1a1aa;
+  --card: #18181b;
+  --border: #27272a;
+  --accent: #3b82f6;
+
+  color-scheme: dark;
+}
+
+/* `inline` hace que las utilidades compilen a var(--background) en vez de
+   congelar el valor, que es lo que permite el cambio de tema en runtime. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+
+  --font-sans:
+    "Roboto Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --font-mono:
+    "Source Code Pro", ui-monospace, "Cascadia Code", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #000000;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    scroll-behavior: smooth;
+  }
 
-code {
-    font-family: "Source Coce Pro", ui-monospace, "Cascadia Code", Menlo,
-        Consolas, "DejaVu Sans Mono", monospace;
+  /* El scroll a #anclas no debe quedar bajo el header pegajoso. */
+  [id] {
+    scroll-margin-top: 5rem;
+  }
+
+  code {
+    font-family: var(--font-mono);
     font-weight: 500;
-    display: block;
+  }
+
+  /* Ningún elemento interactivo sin indicador de foco visible. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }

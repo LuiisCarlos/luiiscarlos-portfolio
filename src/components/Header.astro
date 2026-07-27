@@ -1,0 +1,38 @@
+---
+import ThemeToggle from "@components/ThemeToggle.astro";
+
+// TODO(fase 2): aquí va el selector de idioma, como <a> a la ruta equivalente
+// (/ y /es/). No se renderiza todavía porque esas rutas aún no existen y un
+// control que no hace nada es peor que no tenerlo.
+
+const links = [
+  { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Education", href: "#formation" },
+];
+---
+
+<header class="border-border bg-background/80 sticky top-0 z-40 border-b backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-16">
+    <a href="#content" class="font-mono text-sm font-bold">
+      luis<span class="text-accent">works</span>
+    </a>
+
+    <nav aria-label="Sections">
+      <ul class="hidden items-center gap-6 text-sm md:flex">
+        {
+          links.map(({ label, href }) => (
+            <li>
+              <a href={href} class="text-muted hover:text-foreground transition-colors">
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <ThemeToggle />
+  </div>
+</header>

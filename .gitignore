@@ -23,5 +23,9 @@ pnpm-debug.log*
 # IDE
 .idea/
 .vscode/
+.claude/
+.docs/
 
+CLAUDE.md
 TODO.md
+HANDOFF.md

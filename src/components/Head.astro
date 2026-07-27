@@ -1,12 +1,24 @@
 ---
+type Props = {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+};
+
 const {
-  title = "Luis Carlos",
-  description = "Welcome to my Portfolio!",
-  image = "",
-  url = "https://luisworks.dev",
+  title = "Luis Carlos — Backend Developer",
+  description = "Portfolio of Luis Carlos Caicedo Giraldo, a backend developer working with Java, Spring and PostgreSQL.",
+  // TODO(pendiente): crear public/og.png (1200x630). Hasta entonces las
+  // previsualizaciones en redes salen en blanco.
+  image = "/og.png",
   imageAlt = "Preview of Luis Carlos Portfolio",
-  ...props
 } = Astro.props;
+
+// `site` está en astro.config.mjs, así que canonical y og:url se ajustan solos
+// a cada ruta. No hardcodear URLs aquí.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
 ---
 
 <meta charset="UTF-8" />
@@ -16,27 +28,21 @@ const {
 <title>{title}</title>
 <meta name="description" content={description} />
 
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="canonical" href={canonical} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:title" content={title} />
 <meta property="og:type" content="website" />
-<meta property="og:url" content={url} />
+<meta property="og:url" content={canonical} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={image} />
+<meta property="og:image" content={imageUrl} />
 <meta property="og:image:alt" content={imageAlt} />
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={image} />
+<meta name="twitter:image" content={imageUrl} />
 <meta name="twitter:image:alt" content={imageAlt} />
-
-<!-- Optional: Web Analytics (commented out for now) -->
-<!-- <script src="https://your-analytics-script.js" defer></script> -->
-
-<!-- Optional: Canonical link -->
-<link rel="canonical" href={url} />

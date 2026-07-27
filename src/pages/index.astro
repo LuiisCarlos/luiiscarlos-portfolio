@@ -1,12 +1,13 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import HeroSection from "../components/HeroSection";
-import AboutSection from "../components/AboutSection";
-import ExperienceSection from "../components/ExperienceSection";
-import FormationSection from "../components/FormationSection";
-import Footer from "../components/Footer.astro";
-import { ProjectsSection } from "../components/ProjectsSection";
+import Layout from "@/layouts/Layout.astro";
+import HeroSection from "@components/HeroSection";
+import AboutSection from "@components/AboutSection";
+import ExperienceSection from "@components/ExperienceSection";
+import ProjectsSection from "@components/ProjectsSection";
+import FormationSection from "@components/FormationSection";
+import Footer from "@components/Footer.astro";
 
+// TODO(fase 2): mover a src/data/*.ts para poder alimentar / y /es/ con lo mismo.
 const personalData = {
   name: "Luis Carlos",
   fullname: "Luis Carlos Caicedo Giraldo",
@@ -19,25 +20,29 @@ const personalData = {
 const personalLinks = {
   github: "https://github.com/luiiscarlos",
   linkedin: "https://linkedin.com/in/luiiscarlos",
+  // TODO(pendiente): subir el CV a public/ y apuntar aquí. Vacío = no se renderiza.
   resume: "",
 };
 ---
 
 <Layout>
+  {/* client:load solo para lo visible en el primer viewport. */}
   <HeroSection client:load name={personalData.name} />
 
+  {/* El resto está bajo el fold: client:visible. */}
   <AboutSection
-    client:load
+    client:visible
     fullname={personalData.fullname}
     email={personalData.email}
     experience={personalData.experience}
     language={personalData.language}
   />
 
-  <ExperienceSection client:load />
+  <ExperienceSection client:visible />
 
-  <ProjectsSection client:load />
+  <ProjectsSection client:visible />
 
+  {/* Sin directiva: es puramente presentacional, no envía JS. */}
   <FormationSection />
 
   <Footer

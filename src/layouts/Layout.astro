@@ -1,16 +1,56 @@
 ---
-import Head from "../components/Head.astro";
-import "../styles/global.css";
+import Head from "@components/Head.astro";
+import Header from "@components/Header.astro";
+
+import "@fontsource-variable/roboto";
+import "@fontsource/source-code-pro/400.css";
+import "@fontsource/source-code-pro/500.css";
+import "@/styles/global.css";
+
+type Props = {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+};
+
+const { title, description, image, imageAlt } = Astro.props;
 ---
 
 <!doctype html>
+<!-- TODO(fase 2): `lang` debe derivarse de la URL cuando existan las rutas /es/ -->
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <Head />
+    <Head title={title} description={description} image={image} imageAlt={imageAlt} />
+
+    {
+      /*
+      Aplica el tema antes del primer pintado. `is:inline` es imprescindible:
+      sin él Astro lo empaqueta y difiere, y se ve el flash de fondo claro.
+      Por defecto oscuro; solo una preferencia guardada lo cambia.
+    */
+    }
+    <script is:inline>
+      if (localStorage.getItem("theme") === "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
   </head>
 
-  <body>
-    <slot />
+  <body class="bg-background text-foreground">
+    <a
+      href="#content"
+      class="bg-accent text-background sr-only rounded-md px-4 py-2 focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50"
+    >
+      Skip to content
+    </a>
+
+    <Header />
+
+    <main id="content">
+      <slot />
+    </main>
   </body>
 </html>
