@@ -1,8 +1,8 @@
 import { certifications, education } from "@/data/education";
 import { experience } from "@/data/experience";
 import { personal } from "@/data/personal";
-import { projects } from "@/data/projects";
-import type { Lang } from "./config";
+import { getProject, projects } from "@/data/projects";
+import { langPath, type Lang } from "./config";
 import { useTranslations } from "./utils";
 import type { UIKey } from "./ui";
 
@@ -43,7 +43,11 @@ export function getContent(lang: Lang) {
       bio: t("about.bio"),
       experienceValue: t("about.experience-value"),
       languages: t("about.languages"),
+      resumeUrl: personal.resume,
       resumePlaceholder: t("about.resume-placeholder"),
+      resumeView: t("about.resume-view"),
+      resumeDownload: t("about.resume-download"),
+      resumePreview: t("about.resume-preview"),
     },
 
     experience: {
@@ -67,6 +71,7 @@ export function getContent(lang: Lang) {
       subtitle: t("projects.subtitle"),
       viewCode: t("projects.view-code"),
       liveDemo: t("projects.live-demo"),
+      details: t("project.details"),
       of: t("projects.of"),
       entries: projects.map((project) => ({
         id: project.id,
@@ -74,6 +79,7 @@ export function getContent(lang: Lang) {
         tech: project.tech,
         github: project.github,
         demo: project.demo,
+        href: projectPath(lang, project.id),
         title: byId(`projects.${project.id}.title`),
         description: byId(`projects.${project.id}.description`),
         typeLabel: byId(`projects.type.${project.type}`),
@@ -106,3 +112,81 @@ export function getContent(lang: Lang) {
 }
 
 export type Content = ReturnType<typeof getContent>;
+
+/** URL del detalle de un proyecto en el idioma dado. */
+export function projectPath(lang: Lang, id: string): string {
+  return `${langPath[lang]}projects/${id}/`;
+}
+
+/**
+ * Contenido de la página de detalle de un proyecto.
+ *
+ * `detail` y `gallery-alt` son opcionales a propósito: un proyecto sin texto
+ * largo ni imágenes se renderiza igual, solo que sin esas dos secciones. Por eso
+ * aquí las claves se leen tolerando que no existan, en vez de con `listById`.
+ */
+export function getProjectContent(lang: Lang, id: string) {
+  const t = useTranslations(lang);
+  const project = getProject(id);
+
+  if (!project) {
+    throw new Error(`No hay ningún proyecto con id "${id}" en src/data/projects.ts`);
+  }
+
+  const byId = (key: string) => t(key as UIKey) as string;
+  const optionalList = (key: string) => (t(key as UIKey) ?? []) as readonly string[];
+
+  const title = byId(`projects.${id}.title`);
+  const alts = optionalList(`projects.${id}.gallery-alt`);
+
+  const index = projects.findIndex((entry) => entry.id === id);
+  const sibling = (offset: number) => {
+    const entry = projects[(index + offset + projects.length) % projects.length];
+    return { href: projectPath(lang, entry.id), title: byId(`projects.${entry.id}.title`) };
+  };
+
+  return {
+    id,
+    title,
+    description: byId(`projects.${id}.description`),
+    typeLabel: byId(`projects.type.${project.type}`),
+    type: project.type,
+    tech: project.tech,
+    github: project.github,
+    demo: project.demo,
+    detail: optionalList(`projects.${id}.detail`),
+    // Sin alternativo propio se cae al título: mejor eso que un alt vacío.
+    gallery: (project.gallery ?? []).map((src, position) => ({
+      src,
+      alt: alts[position] ?? title,
+    })),
+    galleryAspect: project.galleryAspect ?? "landscape",
+
+    backHref: `${langPath[lang]}#projects`,
+    previous: sibling(-1),
+    next: sibling(1),
+
+    labels: {
+      back: t("project.back"),
+      overview: t("project.overview"),
+      gallery: t("project.gallery"),
+      stack: t("project.stack"),
+      links: t("project.links"),
+      viewCode: t("projects.view-code"),
+      liveDemo: t("projects.live-demo"),
+      previousProject: t("project.previous-project"),
+      nextProject: t("project.next-project"),
+      siblings: t("nav.projects"),
+    },
+
+    galleryLabels: {
+      previous: t("project.previous-image"),
+      next: t("project.next-image"),
+      image: t("project.image"),
+      goTo: t("project.go-to-image"),
+      of: t("projects.of"),
+    },
+  };
+}
+
+export type ProjectContent = ReturnType<typeof getProjectContent>;

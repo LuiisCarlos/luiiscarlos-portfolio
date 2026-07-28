@@ -1,6 +1,6 @@
 ---
-import { languages, langPath, type Lang } from "@/i18n/config";
-import { useTranslations } from "@/i18n/utils";
+import { languages, type Lang } from "@/i18n/config";
+import { getAlternatePath, useTranslations } from "@/i18n/utils";
 
 type Props = { lang: Lang };
 
@@ -8,11 +8,13 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 // Enlaces reales a la otra ruta, no un <select> con estado: así funciona sin
-// JavaScript y cada idioma tiene su propia URL indexable.
+// JavaScript y cada idioma tiene su propia URL indexable. La ruta se calcula
+// desde la actual, no desde la raíz: en un detalle de proyecto hay que caer en
+// el mismo proyecto, no en la portada.
 const entries = (Object.keys(languages) as Lang[]).map((code) => ({
   code,
   label: languages[code],
-  href: langPath[code],
+  href: getAlternatePath(code, Astro.url.pathname),
   current: code === lang,
 }));
 ---

@@ -1,7 +1,11 @@
 ---
-// Toggle de tema en .astro con <script> propio: alternar una clase no justifica
-// arrastrar el bundle de React. El estado inicial ya lo aplica el script
-// `is:inline` de Layout.astro, antes del primer pintado.
+// Toggle de tema en .astro con su propio script: alternar una clase no
+// justifica arrastrar el bundle de React. El estado inicial ya lo aplica el
+// script `is:inline` de Layout.astro, antes del primer pintado.
+//
+// Ojo: nada de escribir la etiqueta script entre ángulos en este comentario.
+// El escáner de dependencias de esbuild la lee como apertura de bloque real y
+// el dev server revienta con un error de sintaxis que apunta a otro fichero.
 
 type Props = { label: string };
 

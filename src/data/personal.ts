@@ -6,6 +6,7 @@ export const personal = {
   email: "luisccg2003@gmail.com",
   github: "https://github.com/luiiscarlos",
   linkedin: "https://linkedin.com/in/luiiscarlos",
-  // TODO: subir el CV a public/ y apuntar aquí. Vacío = el enlace no se renderiza.
-  resume: "",
+  // Sirve desde public/. Vacío = el enlace del footer y los botones de la
+  // pestaña "Resume" no se renderizan, y se muestra el placeholder.
+  resume: "/cv-luis-carlos.pdf",
 } as const;

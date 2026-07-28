@@ -13,4 +13,14 @@ export const experience: ExperienceEntry[] = [
     company: "Parker Work Systems S.L.",
     technologies: ["PHP", "Javascript", "JQuery", "SQL", "HTML", "Bootstrap"],
   },
+  {
+    id: "hospital",
+    company: "Hospital Universitario Reina Sofía",
+    technologies: ["PHP", "Javascript", "JQuery", "SQL", "HTML", "Bootstrap"],
+  },
+  {
+    id: "quo",
+    company: "QUO Telecom",
+    technologies: ["PHP", "Javascript", "JQuery", "SQL", "HTML", "Bootstrap"],
+  },
 ];

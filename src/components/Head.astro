@@ -1,6 +1,6 @@
 ---
 import { defaultLang, languages, type Lang } from "@/i18n/config";
-import { useTranslations } from "@/i18n/utils";
+import { getAlternatePath, useTranslations } from "@/i18n/utils";
 
 type Props = {
   lang: Lang;
@@ -18,11 +18,10 @@ const t = useTranslations(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL(image, Astro.site);
 
-// Ruta sin prefijo de idioma, para construir las alternativas de cada locale.
-const basePath = Astro.url.pathname.replace(/^\/es(?=\/|$)/, "") || "/";
+// La misma ruta en cada idioma, para los hreflang.
 const alternates = (Object.keys(languages) as Lang[]).map((code) => ({
   code,
-  href: new URL(code === defaultLang ? basePath : `/${code}${basePath}`, Astro.site),
+  href: new URL(getAlternatePath(code, Astro.url.pathname), Astro.site),
 }));
 ---
 

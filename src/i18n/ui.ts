@@ -40,6 +40,9 @@ const en = {
   "about.experience-value": "1+ years",
   "about.languages": ["English", "Spanish"],
   "about.resume-placeholder": "Resume coming soon.",
+  "about.resume-view": "Open in a new tab",
+  "about.resume-download": "Download PDF",
+  "about.resume-preview": "Resume preview",
 
   "experience.title": "Work",
   "experience.title-accent": "Experience",
@@ -52,6 +55,26 @@ const en = {
     "Enhanced teamwork and adaptability skills by integrating into an established system without starting from scratch.",
     "Although I didn't hold leadership roles, my consistent contributions helped progress system updates and improvements.",
     "Gained real-world experience in a professional environment and learned how to work effectively in a collaborative setting.",
+  ],
+
+  "experience.hospital.role": "WEB DEVELOPER",
+  "experience.hospital.location": "Córdoba, Spain",
+  "experience.hospital.duration": "Jun 2024 - Mar 2025",
+  "experience.hospital.description": [
+    "Developed and maintained web applications for hospital management systems.",
+    "Worked with healthcare data systems ensuring reliability and compliance with regulations.",
+    "Collaborated with medical staff to understand requirements and deliver effective solutions.",
+    "Improved system performance and user experience through iterative development.",
+  ],
+
+  "experience.quo.role": "JUNIOR DEVELOPER",
+  "experience.quo.location": "Córdoba, Spain",
+  "experience.quo.duration": "Jan 2024 - May 2024",
+  "experience.quo.description": [
+    "Assisted in development of telecom software solutions.",
+    "Participated in code reviews and learned best practices from senior developers.",
+    "Contributed to debugging and optimization of existing systems.",
+    "Gained foundational experience in professional software development practices.",
   ],
 
   "projects.title": "My",
@@ -67,6 +90,9 @@ const en = {
   "projects.type.cli": "CLI Tool",
   "projects.type.fullstack": "Full Stack",
   "projects.type.frontend": "Frontend",
+  "projects.gomur.title": "GoMur",
+  "projects.gomur.description":
+    "A REST API and a mobile client for public transport in Murcia: TUM buses, the tram and the CTM intercity lines. A monorepo with a hexagonal Spring Boot backend and an Expo client, wired together over nothing but HTTP.",
   "projects.parse-ai.title": "Parse AI",
   "projects.parse-ai.description":
     "Processes and organizes large volumes of business documents by extracting key data, generating AI-powered summaries and tags, and securely storing everything in the cloud. Designed to streamline document management and improve searchability through intelligent filtering.",
@@ -79,6 +105,53 @@ const en = {
   "projects.express-proxy.title": "Express JS Proxy Server",
   "projects.express-proxy.description":
     "A lightweight API proxy built with Express, designed to handle secure communication between AI services and clients, demonstrating backend expertise.",
+
+  // Página de detalle: /projects/<id>/
+  "project.details": "Details",
+  "project.back": "Back to projects",
+  "project.overview": "About this project",
+  "project.gallery": "Gallery",
+  "project.stack": "Tech stack",
+  "project.links": "Links",
+  "project.previous-image": "Previous image",
+  "project.next-image": "Next image",
+  "project.image": "Image",
+  "project.go-to-image": "Go to image",
+  "project.previous-project": "Previous project",
+  "project.next-project": "Next project",
+
+  // El texto largo de cada proyecto vive en `projects.<id>.detail`. Es opcional:
+  // sin esa clave, el detalle muestra solo la descripción corta.
+  "projects.portfolio.detail": [
+    "This site is a static Astro build with React islands: only the parts that actually need JavaScript ship any. The hero hydrates on load, everything below the fold hydrates when it scrolls into view, and the education section ships no JavaScript at all.",
+    "It is bilingual without a runtime i18n library. English lives at / and Spanish at /es/, both built at compile time from the same component tree, so the two versions cannot drift apart and search engines index both. Language-neutral facts live in data files, prose lives in a typed dictionary, and a mismatch between the two languages fails the type check instead of failing in the browser.",
+    "The design system is a small set of semantic colour tokens defined once in CSS. Light and dark mode are the same components reading different variables, applied before the first paint so there is no flash of the wrong theme.",
+    "Motion is GSAP, always scoped to the component that owns it and always reverted on unmount, and every animation sits behind a reduced-motion check.",
+  ],
+  "projects.portfolio.gallery-alt": [
+    "Placeholder image 1",
+    "Placeholder image 2",
+    "Placeholder image 3",
+  ],
+  "projects.academ-iq.gallery-alt": [
+    "Academ-IQ home page",
+    "Log in dialog",
+    "Dashboard",
+    "Course detail page",
+  ],
+  "projects.gomur.gallery-alt": [
+    "GoMur home screen",
+    "List of lines",
+    "Detail of a line",
+    "Detail of a stop",
+    "Tickets screen",
+  ],
+  "projects.gomur.detail": [
+    "GoMur brings the public transport of Murcia into one place: the TUM city buses, the tram and the intercity lines run by the CTM. It is two things at once — a REST API that models the network, and a mobile app that consumes it.",
+    "The repository is a monorepo with two autonomous subprojects. api/ is a Spring Boot 4.1 backend on Java 21 with PostgreSQL hosted on Supabase, built with Maven and shipped in Docker. mobile/ is an Expo client written in TypeScript with its own Node toolchain. Nothing couples them beyond HTTP: the app only knows the API's URL, so either side can be rebuilt or redeployed without touching the other.",
+    "The backend follows a hexagonal architecture — ports and adapters — organised by feature rather than by layer, so the domain does not depend on the database or the web framework. A Makefile at the root is the single entry point to the whole thing: make run-api boots the backend in its dev profile and follows the logs, make run-app starts Expo and prints the QR code.",
+    "The API deploys to Railway straight from the monorepo, pointing the service root at api/ so it picks up the Dockerfile from there. The app is tested on a physical iPhone through Expo Go and on the Android emulator, which keeps the whole loop free of a Mac and of a paid developer account.",
+  ],
 
   "formation.title": "Education &",
   "formation.title-accent": "Certificates",
@@ -152,6 +225,9 @@ const es: Dict = {
   "about.experience-value": "1+ años",
   "about.languages": ["Inglés", "Español"],
   "about.resume-placeholder": "CV disponible próximamente.",
+  "about.resume-view": "Abrir en otra pestaña",
+  "about.resume-download": "Descargar PDF",
+  "about.resume-preview": "Vista previa del CV",
 
   "experience.title": "Experiencia",
   "experience.title-accent": "Laboral",
@@ -164,6 +240,26 @@ const es: Dict = {
     "Mejoré mi trabajo en equipo y mi capacidad de adaptación al integrarme en un sistema ya establecido, sin partir de cero.",
     "Aunque no ocupé puestos de responsabilidad, mis aportaciones constantes ayudaron a avanzar en las mejoras y actualizaciones del sistema.",
     "Gané experiencia real en un entorno profesional y aprendí a trabajar de forma efectiva en un equipo.",
+  ],
+
+  "experience.hospital.role": "DESARROLLADOR WEB",
+  "experience.hospital.location": "Córdoba, España",
+  "experience.hospital.duration": "Jun 2024 - Mar 2025",
+  "experience.hospital.description": [
+    "Desarrollé y mantuve aplicaciones web para los sistemas de gestión hospitalaria.",
+    "Trabajé con sistemas de datos sanitarios, cuidando la fiabilidad y el cumplimiento de la normativa.",
+    "Colaboré con el personal médico para entender los requisitos y entregar soluciones útiles.",
+    "Mejoré el rendimiento del sistema y la experiencia de uso con un desarrollo iterativo.",
+  ],
+
+  "experience.quo.role": "DESARROLLADOR JUNIOR",
+  "experience.quo.location": "Córdoba, España",
+  "experience.quo.duration": "Ene 2024 - May 2024",
+  "experience.quo.description": [
+    "Colaboré en el desarrollo de soluciones software para telecomunicaciones.",
+    "Participé en revisiones de código y aprendí buenas prácticas de los desarrolladores sénior.",
+    "Contribuí a la depuración y optimización de sistemas ya en marcha.",
+    "Adquirí la base del desarrollo de software en un entorno profesional.",
   ],
 
   "projects.title": "Mis",
@@ -179,6 +275,9 @@ const es: Dict = {
   "projects.type.cli": "Herramienta CLI",
   "projects.type.fullstack": "Full Stack",
   "projects.type.frontend": "Frontend",
+  "projects.gomur.title": "GoMur",
+  "projects.gomur.description":
+    "API REST y app móvil del transporte público de Murcia: los autobuses de TUM, el tranvía y las interurbanas del CTM. Un monorepo con backend hexagonal en Spring Boot y cliente en Expo, unidos solo por HTTP.",
   "projects.parse-ai.title": "Parse AI",
   "projects.parse-ai.description":
     "Procesa y organiza grandes volúmenes de documentos empresariales: extrae los datos clave, genera resúmenes y etiquetas con IA y lo almacena todo de forma segura en la nube. Diseñado para agilizar la gestión documental y mejorar las búsquedas mediante filtrado inteligente.",
@@ -191,6 +290,50 @@ const es: Dict = {
   "projects.express-proxy.title": "Servidor proxy con Express JS",
   "projects.express-proxy.description":
     "Un proxy de API ligero construido con Express, pensado para gestionar la comunicación segura entre servicios de IA y clientes.",
+
+  "project.details": "Ver detalles",
+  "project.back": "Volver a proyectos",
+  "project.overview": "Sobre este proyecto",
+  "project.gallery": "Galería",
+  "project.stack": "Tecnologías",
+  "project.links": "Enlaces",
+  "project.previous-image": "Imagen anterior",
+  "project.next-image": "Imagen siguiente",
+  "project.image": "Imagen",
+  "project.go-to-image": "Ir a la imagen",
+  "project.previous-project": "Proyecto anterior",
+  "project.next-project": "Proyecto siguiente",
+
+  "projects.portfolio.detail": [
+    "Este sitio es un build estático de Astro con islas de React: solo envía JavaScript lo que de verdad lo necesita. El hero hidrata al cargar, todo lo que queda bajo el fold hidrata al entrar en pantalla, y la sección de formación no envía ni un byte de JavaScript.",
+    "Es bilingüe sin librería de i18n en tiempo de ejecución. El inglés vive en / y el español en /es/, los dos construidos en compilación desde el mismo árbol de componentes, así que las dos versiones no pueden divergir y Google indexa ambas. Los hechos neutros al idioma viven en ficheros de datos, la prosa en un diccionario tipado, y un desajuste entre idiomas rompe el chequeo de tipos en vez de romper en el navegador.",
+    "El sistema de diseño es un puñado de tokens semánticos de color declarados una sola vez en CSS. El modo claro y el oscuro son los mismos componentes leyendo variables distintas, aplicadas antes del primer pintado para que no haya destello del tema equivocado.",
+    "Las animaciones son GSAP, siempre con el scope del componente que las crea y siempre revertidas al desmontar, y todas pasan por una comprobación de movimiento reducido.",
+  ],
+  "projects.portfolio.gallery-alt": [
+    "Imagen de ejemplo 1",
+    "Imagen de ejemplo 2",
+    "Imagen de ejemplo 3",
+  ],
+  "projects.academ-iq.gallery-alt": [
+    "Página de inicio de Academ-IQ",
+    "Diálogo de inicio de sesión",
+    "Panel principal",
+    "Página de detalle de un curso",
+  ],
+  "projects.gomur.gallery-alt": [
+    "Pantalla de inicio de GoMur",
+    "Listado de líneas",
+    "Detalle de una línea",
+    "Detalle de una parada",
+    "Pantalla de billetes",
+  ],
+  "projects.gomur.detail": [
+    "GoMur reúne el transporte público de Murcia en un solo sitio: los autobuses urbanos de TUM, el tranvía y las líneas interurbanas del CTM. Son dos cosas a la vez: una API REST que modela la red y una app móvil que la consume.",
+    "El repositorio es un monorepo con dos subproyectos autónomos. api/ es un backend de Spring Boot 4.1 sobre Java 21 con PostgreSQL alojado en Supabase, construido con Maven y empaquetado en Docker. mobile/ es un cliente en Expo escrito en TypeScript, con su propio toolchain de Node. No hay más acoplamiento que HTTP: la app solo conoce la URL de la API, así que cualquiera de los dos lados se puede reconstruir o desplegar sin tocar el otro.",
+    "El backend sigue una arquitectura hexagonal — puertos y adaptadores — organizada por features y no por capas, de modo que el dominio no depende ni de la base de datos ni del framework web. Un Makefile en la raíz es el único punto de entrada a todo: make run-api levanta el backend en su perfil dev y sigue los logs, y make run-app arranca Expo y muestra el código QR.",
+    "La API se despliega en Railway directamente desde el monorepo, apuntando la raíz del servicio a api/ para que detecte ahí el Dockerfile. La app se prueba en un iPhone físico con Expo Go y en el emulador de Android, lo que mantiene todo el ciclo sin necesidad de un Mac ni de una cuenta de desarrollador de pago.",
+  ],
 
   "formation.title": "Educación y",
   "formation.title-accent": "Certificados",

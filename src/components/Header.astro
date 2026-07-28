@@ -1,7 +1,7 @@
 ---
 import LanguageSwitch from "@components/LanguageSwitch.astro";
 import ThemeToggle from "@components/ThemeToggle.astro";
-import type { Lang } from "@/i18n/config";
+import { langPath, type Lang } from "@/i18n/config";
 import { useTranslations } from "@/i18n/utils";
 
 type Props = { lang: Lang };
@@ -9,11 +9,16 @@ type Props = { lang: Lang };
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
+// Anclas absolutas a la portada del idioma, no relativas: el header también se
+// renderiza en las páginas de detalle, donde un `#about` a secas no lleva a
+// ninguna parte. En la portada el comportamiento es idéntico.
+const home = langPath[lang];
+
 const links = [
-  { label: t("nav.about"), href: "#about" },
-  { label: t("nav.experience"), href: "#experience" },
-  { label: t("nav.projects"), href: "#projects" },
-  { label: t("nav.education"), href: "#formation" },
+  { label: t("nav.about"), href: `${home}#about` },
+  { label: t("nav.experience"), href: `${home}#experience` },
+  { label: t("nav.projects"), href: `${home}#projects` },
+  { label: t("nav.education"), href: `${home}#formation` },
 ];
 ---
 
@@ -22,7 +27,7 @@ const links = [
   class="border-border bg-background/80 sticky top-0 z-40 border-b backdrop-blur-md"
 >
   <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-6 lg:px-16">
-    <a href="#content" class="font-mono text-sm font-bold whitespace-nowrap">
+    <a href={home} class="font-mono text-sm font-bold whitespace-nowrap">
       luis<span class="text-accent">works</span>
     </a>
 

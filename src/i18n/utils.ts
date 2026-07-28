@@ -18,7 +18,16 @@ export function useTranslations(lang: Lang) {
   };
 }
 
-/** Ruta equivalente en el otro idioma, conservando el hash de sección. */
-export function getAlternatePath(lang: Lang, hash = ""): string {
-  return `${langPath[lang]}${hash}`;
+/** Quita el prefijo de idioma de una ruta: `/es/projects/x` → `/projects/x`. */
+export function stripLangPrefix(pathname: string): string {
+  return pathname.replace(/^\/es(?=\/|$)/, "") || "/";
+}
+
+/**
+ * Misma página en otro idioma. Hay que pasarle la ruta actual: con detalles de
+ * proyecto ya no vale devolver siempre la portada.
+ */
+export function getAlternatePath(lang: Lang, pathname: string): string {
+  const base = stripLangPrefix(pathname);
+  return lang === defaultLang ? base : `${langPath[lang]}${base.slice(1)}`;
 }

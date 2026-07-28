@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
+  ArrowRight,
   Code2,
   Database,
   ExternalLink,
@@ -21,6 +22,8 @@ export type LocalizedProject = {
   tech: string[];
   github?: string;
   demo?: string;
+  /** Detalle del proyecto: /projects/<id>/ en el idioma correspondiente. */
+  href: string;
   title: string;
   description: string;
   typeLabel: string;
@@ -32,6 +35,7 @@ type ProjectsSectionProps = {
   subtitle: string;
   viewCode: string;
   liveDemo: string;
+  details: string;
   of: string;
   entries: LocalizedProject[];
 };
@@ -51,6 +55,7 @@ function ProjectsSection({
   subtitle,
   viewCode,
   liveDemo,
+  details,
   of,
   entries,
 }: ProjectsSectionProps) {
@@ -112,8 +117,13 @@ function ProjectsSection({
                     <Icon size={20} aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="group-hover:text-accent text-xl font-bold transition-colors duration-300">
-                      {project.title}
+                    <h3 className="text-xl font-bold">
+                      <a
+                        href={project.href}
+                        className="group-hover:text-accent transition-colors duration-300"
+                      >
+                        {project.title}
+                      </a>
                     </h3>
                     <span className="text-accent/80 text-sm font-medium">{project.typeLabel}</span>
                   </div>
@@ -132,7 +142,18 @@ function ProjectsSection({
                   ))}
                 </ul>
 
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href={project.href}
+                    className="bg-accent text-background hover:bg-accent/90 flex flex-1 items-center justify-center gap-2 rounded-sm px-4 py-2 text-sm font-medium transition-all duration-200"
+                  >
+                    <ArrowRight size={16} aria-hidden="true" />
+                    {details}
+                    <span className="sr-only">
+                      {of} {project.title}
+                    </span>
+                  </a>
+
                   {project.github && (
                     <a
                       href={project.github}
@@ -151,7 +172,7 @@ function ProjectsSection({
                   {project.demo && (
                     <a
                       href={project.demo}
-                      className="bg-accent text-background hover:bg-accent/90 flex flex-1 items-center justify-center gap-2 rounded-sm px-4 py-2 text-sm font-medium transition-all duration-200"
+                      className="bg-background border-border hover:bg-accent hover:border-accent hover:text-background flex flex-1 items-center justify-center gap-2 rounded-sm border px-4 py-2 text-sm font-medium transition-all duration-200"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Download, SquareArrowOutUpRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -17,7 +17,12 @@ type AboutSectionProps = {
   bio: string;
   experienceValue: string;
   languages: readonly string[];
+  /** Ruta del PDF en public/. Vacía mientras no haya CV: entonces sale el placeholder. */
+  resumeUrl: string;
   resumePlaceholder: string;
+  resumeView: string;
+  resumeDownload: string;
+  resumePreview: string;
 };
 
 const TAB_IDS = ["aboutme", "skills", "resume"] as const;
@@ -43,7 +48,11 @@ function AboutSection({
   bio,
   experienceValue,
   languages,
+  resumeUrl,
   resumePlaceholder,
+  resumeView,
+  resumeDownload,
+  resumePreview,
 }: AboutSectionProps) {
   const [activeTab, setActiveTab] = useState<TabId>("aboutme");
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -309,9 +318,47 @@ function AboutSection({
             )}
 
             {activeTab === "resume" && (
-              <div role="tabpanel" id="panel-resume" aria-labelledby="tab-resume">
-                {/* TODO: enlazar el CV en PDF desde public/. */}
-                <p className="text-muted">{resumePlaceholder}</p>
+              <div
+                role="tabpanel"
+                id="panel-resume"
+                aria-labelledby="tab-resume"
+                className="space-y-5"
+              >
+                {resumeUrl ? (
+                  <>
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                      <a
+                        href={resumeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-accent text-background hover:bg-accent/90 flex flex-1 items-center justify-center gap-2 rounded-sm px-4 py-2.5 text-sm font-medium transition-all duration-200"
+                      >
+                        <SquareArrowOutUpRight size={16} aria-hidden="true" />
+                        {resumeView}
+                      </a>
+
+                      {/* `download` fuerza la descarga en vez de abrir el visor del navegador. */}
+                      <a
+                        href={resumeUrl}
+                        download
+                        className="bg-background border-border hover:bg-accent hover:border-accent hover:text-background flex flex-1 items-center justify-center gap-2 rounded-sm border px-4 py-2.5 text-sm font-medium transition-all duration-200"
+                      >
+                        <Download size={16} aria-hidden="true" />
+                        {resumeDownload}
+                      </a>
+                    </div>
+
+                    {/* El visor de PDF embebido es inservible en móvil: ahí quedan
+                        solo los dos botones de arriba. */}
+                    <iframe
+                      src={resumeUrl}
+                      title={resumePreview}
+                      className="border-border hidden h-[32rem] w-full rounded-lg border sm:block"
+                    />
+                  </>
+                ) : (
+                  <p className="text-muted">{resumePlaceholder}</p>
+                )}
               </div>
             )}
           </div>
